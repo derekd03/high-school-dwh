@@ -1,36 +1,28 @@
 using Microsoft.EntityFrameworkCore;
-using App.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// OLTP: SQL Server
-var oltpConnectionString = builder.Configuration.GetConnectionString("OLTPConnection")
-    ?? throw new InvalidOperationException("OLTP connection string not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseOracle(oltpConnectionString));
-
-// OLAP: Oracle
-//var olapConnectionString = builder.Configuration.GetConnectionString("OLAPConnection")
-//    ?? throw new InvalidOperationException("OLAP connection string not found.");
-//builder.Services.AddDbContext<AnalyticsDbContext>(options =>
-//    options.UseOracle(olapConnectionString));
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<App.Data.OltpDbContext>(options =>
+    options.UseOracle(builder.Configuration.GetConnectionString("OltpConnection")));
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
