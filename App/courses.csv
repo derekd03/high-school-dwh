@@ -1,0 +1,196 @@
+Code,Title,Credits,DepartmentName
+ENG8,English 8,4,English
+MATH8,Mathematics 8,4,Mathematics
+SCI8,Science 8,4,Science
+SS8,Social Studies 8,4,Social Studies
+PE8,Physical Education 8,2,Physical Education
+FRE8,French 8,4,Modern Languages
+ASR8,Applied Skills Rotation 8,2,Applied Skills
+CE8,Career Education 8,1,Other
+FAR8,Fine Arts Rotation 8,2,Performing Arts
+BB8,Beginner Band 8,2,Performing Arts
+JB8,Junior Band 8,2,Performing Arts
+BC8,Beginner Choir 8,2,Performing Arts
+BS8,Beginner Strings 8,2,Performing Arts
+JS8,Junior Strings 8,2,Performing Arts
+IS8,Intermediate Strings 8,2,Performing Arts
+FSCF8,FI Sciences 8,4,Science
+FSCH8,FI Science Humaines 8,4,Social Studies
+FADRF8,FI Art Dramatique 8,2,Performing Arts
+FRAL8,FI Français Langue Seconde-Immersion 8,4,Modern Languages
+ENG9,English 9,4,English
+MATH9,Mathematics 9,4,Mathematics
+SCI9,Science 9,4,Science
+SS9,Social Studies 9,4,Social Studies
+PE9,PE 9,2,Physical Education
+PE9L,PE 9 Leadership,2,Physical Education
+FRE9,French 9,4,Modern Languages
+CE9,Career Education 9,1,Other
+BB9,Beginner Band 9,2,Performing Arts
+JB9,Junior Band 9,2,Performing Arts
+IB9,Intermediate Band 9,2,Performing Arts
+SB9,Senior Band 9,2,Performing Arts
+CC9,Concert Choir 9,2,Performing Arts
+BS9,Beginner Strings 9,2,Performing Arts
+JS9,Junior Strings 9,2,Performing Arts
+IS9,Intermediate Strings 9,2,Performing Arts
+SSN9,Senior Strings 9,2,Performing Arts
+BG9,Beginner Guitar 9,2,Performing Arts
+IG9,Intermediate Guitar 9,2,Performing Arts
+SG9,Senior Guitar 9,2,Performing Arts
+DR9,Drama 9,2,Performing Arts
+DN9,Dance 9,2,Physical Education
+FL9,Film 9,2,Tech Education
+YS10,Annual Production (Yearbook) 10,2,Other
+FSCF9,FI Sciences 9,4,Science
+FSCH9,FI Science Humaines 9,4,Social Studies
+FADRF9,FI Art Dramatique 9,2,Performing Arts
+FRAL9,FI Français Langue Seconde-Immersion 9,4,Modern Languages
+ENG10_VE,Composition 10 with Verbal Expressions,4,English
+ENG10_DS,Composition 10 with Debate and Public Speaking,4,English
+ENG10_FS,Composition 10 with Fictional Studies,4,English
+ENG10_GN,Composition 10 with Graphic Novels,4,English
+MATH10_FPP,Foundations and Pre-Calculus 10,4,Mathematics
+MATH10_WM,Workplace Mathematics 10,4,Mathematics
+SCI10,Science 10,4,Science
+SS10,Social Studies 10,4,Social Studies
+PE10,Physical Education 10,2,Physical Education
+PE10L,Physical Education 10 Leadership,2,Physical Education
+FRE10,French 10,4,Modern Languages
+ENT10,Entrepreneurship and Marketing 10,2,Applied Skills
+BB10,Beginner Band 10,2,Performing Arts
+IB10,Intermediate Band 10,2,Performing Arts
+SB10,Senior Band 10,2,Performing Arts
+CC10,Concert Choir 10,2,Performing Arts
+BS10,Beginner Strings 10,2,Performing Arts
+JS10,Junior Strings 10,2,Performing Arts
+IS10,Intermediate Strings 10,2,Performing Arts
+BG10,Beginner Guitar 10,2,Performing Arts
+IG10,Intermediate Guitar 10,2,Performing Arts
+SG10,Senior Guitar 10,2,Performing Arts
+DR10,Drama 10,2,Performing Arts
+DN10,Dance 10,2,Physical Education
+FILM10,Film 10,2,Tech Education
+MD10,Media Design 10,2,Tech Education
+TT10,Tech Explorations (Engineering 10),2,Tech Education
+FSCF10,FI Sciences 10,4,Science
+FSCH10,FI Science Humaines 10,4,Social Studies
+FADRF10,FI Art Dramatique 10,2,Performing Arts
+FRAL10,FI Français Langue Seconde-Immersion 10,4,Modern Languages
+ENG11_CW,Creative Writing 11,4,English
+ENG11_NMJ,New Media – Journalism, Podcasting and Audio Storytelling 11,4,English
+ENG11_NML,New Media – Literature and Film Studies 11,4,English
+ENG11_LS,Literary Studies – Psychology of Self 11,4,English
+MATH11_PC,Precalculus 11,4,Mathematics
+MATH11_FM,Foundations of Mathematics 11,4,Mathematics
+MATH11_WM,Workplace Mathematics 11,4,Mathematics
+MATH11_HM,History of Mathematics 11,4,Mathematics
+CLE11,Career Life Education 11,1,Other
+CLCA11,Career Life Connections A 11,1,Other
+FLCF11,FI Langue et Culture de la Francophonie 11,4,Modern Languages
+FEPSS11,FI Explorations Science Humaines et Soc 11,4,Social Studies
+ENG12,English Studies 12,4,English
+CLC12,Career Life Connections – Capstone 12,1,Other
+PT12,Peer Tutoring 12,1,Other
+FRAL12,FI Français langue seconde-immersion 12,4,Modern Languages
+MKP11,Marketing and Promotion 11,2,Applied Skills
+ECON12,Economics 12,2,Applied Skills
+ENT12,Entrepreneurship 12,2,Applied Skills
+FA12,Financial Accounting 12,2,Applied Skills
+FS10,Food Studies 10,2,Applied Skills
+FS11,Food Studies 11,2,Applied Skills
+FS12,Food Studies 12,2,Applied Skills
+TXT10,Textiles 10,2,Applied Skills
+TXT11,Textiles 11,2,Applied Skills
+TXT12,Textiles 12,2,Applied Skills
+FAD12B,Fashion Design 12B,2,Applied Skills
+ID11,Interior Design 11,2,Applied Skills
+PSY11,Psychology 11,2,Applied Skills
+PSY12,Psychology 12,2,Applied Skills
+BB11,Beginner Band 11,2,Performing Arts
+BB12,Beginner Band 12,2,Performing Arts
+IB11,Intermediate Band 11,2,Performing Arts
+IB12,Intermediate Band 12,2,Performing Arts
+SB11,Senior Band 11,2,Performing Arts
+SB12,Senior Band 12,2,Performing Arts
+CC11,Concert Choir 11,2,Performing Arts
+CC12,Concert Choir 12,2,Performing Arts
+DR11,Drama 11,2,Performing Arts
+DR12,Drama 12,2,Performing Arts
+THE11,Théâtre Company 11,2,Performing Arts
+THE12,Théâtre Company 12,2,Performing Arts
+YS11,Annual Production (Yearbook) 11,2,Other
+YS12,Annual Production (Yearbook) 12,2,Other
+SPN11,Introductory Spanish 11,2,Modern Languages
+SPN12,Spanish 12,2,Modern Languages
+JPN11,Introductory Japanese 11,2,Modern Languages
+JPN12,Japanese 12,2,Modern Languages
+AL11,Active Living 11,2,Physical Education
+AL12,Active Living 12,2,Physical Education
+BB11_PE,Basketball 11,2,Physical Education
+BB12_PE,Basketball 12,2,Physical Education
+FC11,Fitness and Conditioning 11,2,Physical Education
+FC12,Fitness and Conditioning 12,2,Physical Education
+VB11,Volleyball 11,2,Physical Education
+VB12,Volleyball 12,2,Physical Education
+CON11,Construction 11,2,Tech Education
+CON12,Construction 12,2,Tech Education
+DIR11,Directing and Scriptwriting 11,2,Tech Education
+DIR12,Directing and Scriptwriting 12,2,Tech Education
+MD11,Media Design 11,2,Tech Education
+WP11,Webpage Design 11,2,Tech Education
+WP12,Webpage Design 12,2,Tech Education
+MW11,Metalwork 11,2,Tech Education
+MW12,Metalwork 12,2,Tech Education
+JR10,Jewelry 10,2,Tech Education
+JR11,Jewelry 11,2,Tech Education
+EL10,Electronics 10,2,Tech Education
+EL11,Electronics 11,2,Tech Education
+ENG11,Engineering 11,2,Tech Education
+WD10,Woodwork 10,2,Tech Education
+WD11,Woodwork 11,2,Tech Education
+WD12,Woodwork 12,2,Tech Education
+DRF10,Drafting 10,2,Tech Education
+DRF11,Drafting 11,2,Tech Education
+DRF12,Drafting 12,2,Tech Education
+SCP10,Studio Arts – Sculpture/Ceramics 10,2,Tech Education
+SCP11,Studio Arts – Sculpture/Ceramics 11,2,Tech Education
+SCP12,Studio Arts – Sculpture/Ceramics 12,2,Tech Education
+SDP10,Studio Arts – Drawing and Painting 10,2,Tech Education
+SDP11,Studio Arts – Drawing and Painting 11,2,Tech Education
+SDP12,Studio Arts – Drawing and Painting 12,2,Tech Education
+SJ10,Senior Jazz Band 10,2,Performing Arts
+SJ11,Senior Jazz Band 11,2,Performing Arts
+SJ12,Senior Jazz Band 12,2,Performing Arts
+CH10,Choir 10,2,Performing Arts
+CH11,Choir 11,2,Performing Arts
+CH12,Choir 12,2,Performing Arts
+SC10,Senior Choir 10 (OFF TT),2,Performing Arts
+SC11,Senior Choir 11 (OFF TT),2,Performing Arts
+SC12,Senior Choir 12 (OFF TT),2,Performing Arts
+THE10,Theatre Company 10,2,Performing Arts
+FTV11,Visual Arts – Film/TV 11,2,Performing Arts
+FTV12,Visual Arts – Film/TV 12,2,Performing Arts
+GA11,Graphic Arts 11,2,Fine Arts
+GA12,Graphic Arts 12,2,Fine Arts
+PHOTO10,Photography 10,2,Fine Arts
+PHOTO11,Photography 11,2,Fine Arts
+PHOTO12,Photography 12,2,Fine Arts
+CALC12,Calculus 12,4,Mathematics
+FOM12,Foundations of Mathematics 12,4,Mathematics
+PREC12,Precalculus 12,4,Mathematics
+STAT12,Statistics 12,4,Mathematics
+CS11,Community Service 11,1,Other
+WE11,Work Experience 11,1,Other
+WE12,Work Experience 12,1,Other
+CSCI11,Computer Science 11,4,Applied Skills
+CSCI12,Computer Science 12,4,Applied Skills
+DF10,Dance Foundations 10,2,Physical Education
+DF11,Dance Foundations 11,2,Physical Education
+DF12,Dance Foundations 12,2,Physical Education
+DTP10,Dance Technique & Performance 10,2,Physical Education
+DTP11,Dance Technique & Performance 11,2,Physical Education
+DCH11,Dance Choreography 11,2,Physical Education
+DCH12,Dance Choreography 12,2,Physical Education
+DC11_PE,Dance Company 11 (OFF TT),2,Physical Education
+DC12_PE,Dance Company 12 (OFF TT),2,Physical Education
