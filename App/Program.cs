@@ -22,6 +22,15 @@ builder.Services.AddScoped<ETLService>(sp =>
     return new ETLService(oltpConn!, olapConn!);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        policy => policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 // Run seeding and ETL on startup
@@ -67,5 +76,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseCors("AllowLocalhost");
 
 app.Run();

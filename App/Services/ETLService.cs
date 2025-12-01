@@ -487,23 +487,11 @@ namespace App.Services
                     {
                         // First try direct decimal conversion
                         avgGrade = Convert.ToInt32(Math.Round(reader.GetDecimal(3)));
-                        Console.WriteLine("Decimal");
                     }
                     catch (InvalidCastException)
                     {
                         // Fallback to double conversion if decimal fails
-                        try
-                        {
-                            avgGrade = Convert.ToInt32(Math.Round(reader.GetDouble(3)));
-                            Console.WriteLine("Double");
-                        }
-                        catch (InvalidCastException)
-                        {
-                            // Final fallback - convert via string
-                            var val = reader.GetValue(3).ToString();
-                            avgGrade = Convert.ToInt32(Math.Round(Convert.ToDecimal(val)));
-                            Console.WriteLine("String");
-                        }
+                        avgGrade = Convert.ToInt32(Math.Round(reader.GetDouble(3)));
                     }
                 }
 
@@ -563,21 +551,12 @@ namespace App.Services
                     try
                     {
                         // First try direct decimal conversion
-                        avgGrade = Convert.ToInt32(Math.Round(reader.GetDecimal(3)));
+                        avgGrade = Convert.ToInt32(Math.Round(reader.GetDecimal(2)));
                     }
                     catch (InvalidCastException)
                     {
                         // Fallback to double conversion if decimal fails
-                        try
-                        {
-                            avgGrade = Convert.ToInt32(Math.Round(reader.GetDouble(3)));
-                        }
-                        catch (InvalidCastException)
-                        {
-                            // Final fallback - convert via string
-                            var val = reader.GetValue(2).ToString();
-                            avgGrade = Convert.ToInt32(Math.Round(Convert.ToDecimal(val)));
-                        }
+                        avgGrade = Convert.ToInt32(Math.Round(reader.GetDouble(2)));
                     }
                 }
 

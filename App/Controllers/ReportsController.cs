@@ -4,6 +4,7 @@ using System.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Types;
 
 namespace App.Controllers
 {
@@ -21,7 +22,7 @@ namespace App.Controllers
         }
 
         [HttpGet("analytics")]
-        public async Task<IActionResult> GetAnalytics([FromQuery] string metric = "profit")
+        public async Task<IActionResult> GetAnalytics([FromQuery] string metric = "agpt")
         {
             var query = BuildAnalyticsSql(metric);
             var results = new List<Dictionary<string, object?>>();
@@ -50,14 +51,39 @@ namespace App.Controllers
                             }
                             else
                             {
-                                // Convert everything to string to avoid type conversion issues
+                                // Get everything as string to avoid type conversion issues
+                                var stringValue = reader.GetString(i);
+                                
+                                // For numeric columns, try to parse and format
+                                if (name.Equals("AVERAGEGRADE", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    if (decimal.TryParse(stringValue, out var decimalValue))
+                                    {
+                                        row[name] = Math.Round(decimalValue, 2, MidpointRounding.AwayFromZero);
+                                    }
+                                    else
+                                    {
+                                        row[name] = stringValue;
+                                    }
+                                }
+                                else
+                                {
+                                    row[name] = stringValue;
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // If GetString fails, try GetValue and ToString
+                            try
+                            {
                                 var value = reader.GetValue(i);
                                 row[name] = value?.ToString();
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            row[name] = $"Error: {ex.Message}";
+                            catch
+                            {
+                                row[name] = null;
+                            }
                         }
                     }
                     results.Add(row);
@@ -78,43 +104,16 @@ namespace App.Controllers
 
         private string BuildAnalyticsSql(string metric) => metric.ToLower() switch
         {
-            "profit" => @"
-                SELECT 
-                    p.product_name AS ProductName,
-                    SUM(s.quantity_sold * (s.sale_price - p.cost_price)) AS TotalProfit
-                FROM 
-                    SalesFact s
-                JOIN 
-                    ProductDim p ON s.product_id = p.product_id
-                GROUP BY 
-                    p.product_name
-                ORDER BY 
-                    TotalProfit DESC",
-            "sales" => @"
-                SELECT 
-                    p.product_name AS ProductName,
-                    SUM(s.quantity_sold * s.sale_price) AS TotalSales
-                FROM 
-                    SalesFact s
-                JOIN 
-                    ProductDim p ON s.product_id = p.product_id
-                GROUP BY 
-                    p.product_name
-                ORDER BY 
-                    TotalSales DESC",
-            "customers" => @"
-                SELECT 
-                    c.customer_name AS CustomerName,
-                    COUNT(s.sale_id) AS TotalPurchases
-                FROM 
-                    SalesFact s
-                JOIN 
-                    CustomerDim c ON s.customer_id = c.customer_id
-                GROUP BY 
-                    c.customer_name
-                ORDER BY 
-                    TotalPurchases DESC",
-            _ => throw new ArgumentException("Invalid metric specified. Valid options are: profit, sales, customers.")
+            // Average grades per teacher
+            "agpt" => @"
+                SELECT t.FirstName || ' ' || t.LastName AS TeacherName,
+                    NVL(AVG(f.AvgGrade), 0) AS AverageGrade,
+                    NVL(SUM(f.StudentCount), 0) AS TotalStudents
+                FROM FactTeacherPerformance f
+                JOIN DimTeacher t ON f.DimTeacherID = t.ID
+                GROUP BY t.FirstName, t.LastName
+                ORDER BY AverageGrade DESC",
+            _ => throw new ArgumentException("Invalid metric specified. Valid options are: 'average grades per teacher'.")
         };
     }
 }
