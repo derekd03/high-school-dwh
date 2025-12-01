@@ -364,7 +364,7 @@ namespace App.Services
             log.Add("Loading FACTCLASS...");
 
             const string sql = @"
-                SELECT ""Id"", ""Location"", ""Day"", ""Period"", ""StartDate"", ""EndDate"", ""CourseId""
+                SELECT ""Id"", ""Location"", ""Day"", ""Period"", ""StartDate"", ""EndDate"", ""CourseId"", ""TeacherId"", ""TermId""
                 FROM ""HIGHSCHOOL_OLTP"".""Classes""";
 
             using var selectCmd = new OracleCommand(sql, oltpConn);
@@ -372,18 +372,20 @@ namespace App.Services
 
             while (await reader.ReadAsync())
             {
-                var id = reader.IsDBNull(0) ? null : reader.GetFieldValue<byte[]>(0);
+                var id = reader.GetFieldValue<byte[]>(0);
                 var location = reader.IsDBNull(1) ? null : reader.GetString(1);
-                var day = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2);
-                var period = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3);
-                var startDate = reader.IsDBNull(4) ? null : reader.GetString(4);
-                var endDate = reader.IsDBNull(5) ? null : reader.GetString(5);
-                var courseId = reader.IsDBNull(6) ? null : reader.GetFieldValue<byte[]>(6);
+                var day = reader.GetInt32(2);
+                var period = reader.GetInt32(3);
+                var startDate = reader.GetString(4);
+                var endDate = reader.GetString(5);
+                var courseId = reader.GetFieldValue<byte[]>(6);
+                var teacherId = reader.GetFieldValue<byte[]>(7);
+                var termId = reader.GetFieldValue<byte[]>(8);
 
                 const string insert = @"
                     INSERT INTO FACTCLASS
-                    (ID, LOCATION, DAY, PERIOD, STARTDATE, ENDDATE, COURSEID)
-                    VALUES (:p_id, :p_loc, :p_day, :p_period, :p_startdate, :p_enddate, :p_courseid)";
+                    (ID, LOCATION, DAY, PERIOD, STARTDATE, ENDDATE, COURSEID, TEACHERID, DIMTERMID)
+                    VALUES (:p_id, :p_loc, :p_day, :p_period, :p_startdate, :p_enddate, :p_courseid, :p_teacherid, :p_termid)";
 
                 using var cmd = new OracleCommand(insert, olapConn);
                 cmd.Parameters.Add(CreateNullableRawParam("p_id", id));
@@ -393,6 +395,8 @@ namespace App.Services
                 cmd.Parameters.Add(CreateStringParam("p_startdate", startDate, 20));
                 cmd.Parameters.Add(CreateStringParam("p_enddate", endDate, 20));
                 cmd.Parameters.Add(CreateNullableRawParam("p_courseid", courseId));
+                cmd.Parameters.Add(CreateNullableRawParam("p_teacherid", teacherId));
+                cmd.Parameters.Add(CreateNullableRawParam("p_termid", termId));
 
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -452,22 +456,18 @@ namespace App.Services
             log.Add("FACTENROLLMENT loaded successfully.");
         }
 
-        public async Task LoadFactTeacherPerformanceAsync(
-    OracleConnection oltpConn,
-    OracleConnection olapConn,
-    List<string> log)
+        public async Task LoadFactTeacherPerformanceAsync(OracleConnection oltpConn, OracleConnection olapConn, List<string> log)
         {
             log.Add("Loading FACTTEACHERPERFORMANCE...");
 
             const string sql = @"
                 SELECT c.""Id"" AS ClassId,
-                       c.""TeacherId"" AS TeacherId,
-                       c.""TermId"" AS TermId,
-                       AVG(e.""Grade"") AS AvgGrade,
-                       COUNT(e.""StudentId"") AS StudentCount
+                    c.""TeacherId"" AS TeacherId,
+                    c.""TermId"" AS TermId,
+                    AVG(e.""Grade"") AS AvgGrade,
+                    COUNT(e.""StudentId"") AS StudentCount
                 FROM ""HIGHSCHOOL_OLTP"".""Classes"" c
-                LEFT JOIN ""HIGHSCHOOL_OLTP"".""Enrollments"" e 
-                       ON c.""Id"" = e.""ClassId""
+                LEFT JOIN ""HIGHSCHOOL_OLTP"".""Enrollments"" e ON c.""Id"" = e.""ClassId""
                 GROUP BY c.""Id"", c.""TeacherId"", c.""TermId""";
 
             using var selectCmd = new OracleCommand(sql, oltpConn);
@@ -495,14 +495,8 @@ namespace App.Services
                     }
                 }
 
-                // COUNT(StudentId) safely
-                int? studentCount = null;
-                if (!reader.IsDBNull(4))
-                {
-                    studentCount = Convert.ToInt32(reader.GetValue(4));
-                }
+                int? studentCount = reader.IsDBNull(4) ? (int?)null : Convert.ToInt32(reader.GetValue(4));
 
-                // Insert into FACTTEACHERPERFORMANCE
                 const string insert = @"
                     INSERT INTO FACTTEACHERPERFORMANCE
                     (AVGGRADE, STUDENTCOUNT, DIMTEACHERID, FACTCLASSID, DIMTERMID)

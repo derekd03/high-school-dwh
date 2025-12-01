@@ -113,6 +113,74 @@ namespace App.Controllers
                 JOIN DimTeacher t ON f.DimTeacherID = t.ID
                 GROUP BY t.FirstName, t.LastName
                 ORDER BY AverageGrade DESC",
+            
+            // ROLLUP: Enrollment Summary by Department -> Course
+            "esbd" => @"
+                SELECT dept.Name AS DepartmentName,
+                    c.Title AS CourseTitle,
+                    dt.Year AS TermYear,
+                    COUNT(e.StudentID) AS EnrollmentCount
+                FROM FactEnrollment e
+                JOIN FactClass cls      ON e.ClassID = cls.ID
+                JOIN DimCourse c        ON cls.CourseID = c.ID
+                JOIN DimDepartment dept ON c.DepartmentID = dept.ID
+                JOIN DimTerm dt         ON e.DimTermID = dt.ID
+                GROUP BY ROLLUP (dept.Name, c.Title, dt.Year)
+                HAVING GROUPING(dt.Year) = 0
+                ORDER BY DepartmentName, CourseTitle, TermYear",
+
+            // CUBE: Attendance Summary by Student and Term
+            "asst" => @"
+                SELECT 
+                    s.FirstName || ' ' || s.LastName AS StudentName,
+                    dt.Year AS TermYear,
+                    dt.TermNumber AS TermNumber,
+                    TRUNC(AVG(e.AttendanceRate), 1) AS AvgAttendanceRate
+                FROM FactEnrollment e
+                JOIN DimStudent s ON e.StudentID = s.ID
+                JOIN DimTerm dt   ON e.DimTermID = dt.ID
+                GROUP BY CUBE (s.FirstName, s.LastName, dt.Year, dt.TermNumber)
+                HAVING 
+                    GROUPING(s.FirstName) = 0 
+                    AND GROUPING(s.LastName) = 0
+                    AND GROUPING(dt.Year) = 0 
+                    AND GROUPING(dt.TermNumber) = 0
+                ORDER BY StudentName, TermYear, TermNumber",
+
+            // GROUPING SETS: Class Count by Teacher, with yearly summaries
+            "ccbt" => @"
+                SELECT 
+                    t.FirstName || ' ' || t.LastName AS TeacherName,
+                    dt.Year AS TermYear,
+                    COUNT(CASE WHEN fc.ID IS NOT NULL AND fc.TeacherId IS NOT NULL AND fc.DimTermId IS NOT NULL THEN 1 END) AS ClassesHandled
+                FROM DimTeacher t
+                LEFT JOIN FactClass fc 
+                    ON fc.TeacherId = t.ID
+                LEFT JOIN DimTerm dt 
+                    ON fc.DimTermId = dt.ID
+                GROUP BY GROUPING SETS (
+                    (t.FirstName, t.LastName, dt.Year),  -- teacher + year
+                    (t.FirstName, t.LastName),           -- teacher total
+                    (dt.Year),                           -- year total
+                    ()                                   -- grand total
+                )
+                HAVING dt.Year IS NOT NULL  -- keep only rows with a year or subtotals
+                ORDER BY TeacherName NULLS LAST, TermYear NULLS LAST",
+
+            // GROUP BY: Enrollment Count per Class
+            "ecpc" => @"
+                SELECT c.Title AS CourseTitle,
+                       cls.Location,
+                       dt.Year AS TermYear,
+                       dt.TermNumber AS TermNumber,
+                       COUNT(e.StudentID) AS EnrollmentCount
+                FROM FactEnrollment e
+                JOIN FactClass cls ON e.ClassID = cls.ID
+                JOIN DimCourse c   ON cls.CourseID = c.ID
+                JOIN DimTerm dt    ON e.DimTermID = dt.ID
+                GROUP BY c.Title, cls.Location, dt.Year, dt.TermNumber
+                ORDER BY EnrollmentCount DESC",
+
             _ => throw new ArgumentException("Invalid metric specified. Valid options are: 'average grades per teacher'.")
         };
     }

@@ -16,8 +16,12 @@ const AnalyticChart = () => {
     const [isDbEmpty, setIsDbEmpty] = useState(true);
 
     const labelOptions = [
-        { value: "agpt", label: 'Average Grades Per Teacher' }
-    ]
+        { value: "agpt", label: "Average Grades Per Teacher" },
+        { value: "esbd", label: "Enrollment Summary by Department" },
+        { value: "asst", label: "Attendance Summary by Student & Term" },
+        { value: "ccbt", label: "Class Count by Teacher (Grouped)" },
+        { value: "ecpc", label: "Enrollment Count Per Class" }
+    ];
 
     const fetchData = useCallback(async (metricName = metric) => {
         try {
@@ -51,10 +55,16 @@ const AnalyticChart = () => {
     }, [metric]);
 
     const labelKey = data.length ? Object.keys(data[0])[0] : 'label';
-    const valueKey =
-        data.length && Object.keys(data[0]).find(k => k.toLowerCase().includes('metric'))
-        ? Object.keys(data[0]).find(k => k.toLowerCase().includes('metric'))
-        : data.length ? Object.keys(data[0])[1] : 'metricValue';
+    const valueKey = data.length 
+        ? (() => {
+            const keys = Object.keys(data[0]);
+            // For ecpc, use the last column
+            if (metric === 'ecpc') {
+                return keys[keys.length - 1];
+            }
+            return keys.find(k => k.toLowerCase().includes('metric')) || keys[1];
+        })()
+        : 'metricValue';
 
     // Get the display label for the current metric
     const getMetricDisplayLabel = () => {
@@ -62,16 +72,22 @@ const AnalyticChart = () => {
         return option ? option.label : metric;
     };
 
+    const maxBars = 10;
+
+    // Limit data for chart
+    const limitedData = data.slice(0, maxBars);
+
     const chartData = {
-        labels: data.map(item => item[labelKey]),
+        labels: limitedData.map(item => item[labelKey]),
         datasets: [
             {
-            label: metric,
-            data: data.map(item => Number(item[valueKey] ?? 0)), // ensure numeric
-            backgroundColor: '#4bc06e',
+                label: getMetricDisplayLabel(),
+                data: limitedData.map(item => Number(item[valueKey] ?? 0)), // ensure numeric
+                backgroundColor: '#4bc06e',
             },
         ],
     };
+
 
     const chartOptions = {
         responsive: true,
@@ -80,7 +96,6 @@ const AnalyticChart = () => {
         legend: { 
             position: 'top',
             labels: {
-                    // Optional: You can also update the legend label
                     generateLabels: (chart) => {
                         return [{
                             text: getMetricDisplayLabel(),
@@ -95,7 +110,7 @@ const AnalyticChart = () => {
          },
             title: { 
                 display: true, 
-                text: getMetricDisplayLabel(), // Use display label here
+                text: getMetricDisplayLabel(),
                 font: {
                     size: 16,
                     weight: 'bold'
@@ -116,14 +131,14 @@ const AnalyticChart = () => {
         try {
         const response = await fetch(endpoint, { method: 'GET' });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        fetchData(); // replaced undefined 'fetchMetricData' with fetchData
+        fetchData();
         } catch (err) {
         console.error('ETL action failed:', err);
         alert('ETL action failed. Please check if the backend is running.');
         }
     };
 
-    const isTableOnlyMetric = (metricName) => [].includes(metricName);
+    const isTableOnlyMetric = (metricName) => ["esbd", "asst", "ccbt"].includes(metricName);
 
     return (
         <div className="analytic-chart-container">
@@ -163,16 +178,19 @@ const AnalyticChart = () => {
                 {showTable && (
                 <table className="data-table">
                     <thead>
-                    <tr>
-                        <th>{labelKey}</th>
-                        <th>{valueKey}</th>
-                    </tr>
+                        <tr>
+                            {data.length > 0 &&
+                            Object.keys(data[0]).map((col) => (
+                                <th key={col}>{col}</th>
+                            ))}
+                        </tr>
                     </thead>
                     <tbody>
-                    {data.map((item, index) => (
-                        <tr key={index}>
-                        <td>{item[labelKey]}</td>
-                        <td>{item[valueKey]}</td>
+                    {data.map((row, rowIndex) => (
+                        <tr key={rowIndex}>
+                        {Object.keys(row).map((col, colIndex) => (
+                            <td key={colIndex}>{row[col]}</td>
+                        ))}
                         </tr>
                     ))}
                     </tbody>
