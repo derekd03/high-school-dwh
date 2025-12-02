@@ -106,9 +106,10 @@ namespace App.Controllers
         {
             // Average grades per teacher
             "agpt" => @"
-                SELECT t.FirstName || ' ' || t.LastName AS TeacherName,
-                    NVL(AVG(f.AvgGrade), 0) AS AverageGrade,
-                    NVL(SUM(f.StudentCount), 0) AS TotalStudents
+                SELECT 
+                    t.FirstName || ' ' || t.LastName AS TeacherName,
+                    NVL(SUM(f.StudentCount), 0) AS TotalStudents,
+                    NVL(AVG(f.AvgGrade), 0) AS AverageGrade
                 FROM FactTeacherPerformance f
                 JOIN DimTeacher t ON f.DimTeacherID = t.ID
                 GROUP BY t.FirstName, t.LastName

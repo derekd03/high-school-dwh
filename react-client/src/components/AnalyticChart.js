@@ -86,12 +86,12 @@ const AnalyticChart = () => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-        legend: { 
-            position: 'top',
-            labels: {
+            legend: { 
+                position: 'top',
+                labels: {
                     generateLabels: (chart) => {
                         return [{
-                            text: getMetricDisplayLabel(),
+                            text: valueKey.toUpperCase(),
                             fillStyle: '#4bc06e',
                             strokeStyle: '#5ec17c',
                             lineWidth: 1,
@@ -100,18 +100,21 @@ const AnalyticChart = () => {
                         }];
                     }
                 }
-         },
+            },
+            tooltip: {
+                callbacks: {
+                    title: (items) => items[0].label,
+                    label: (item) => {
+                        const metricLabel = valueKey.toUpperCase();
+                        return `${metricLabel}: ${item.raw}`;
+                    }
+                }
+            },
             title: { 
                 display: true, 
                 text: getMetricDisplayLabel(),
-                font: {
-                    size: 16,
-                    weight: 'bold'
-                },
-                padding: {
-                    top: 10,
-                    bottom: 30
-                }
+                font: { size: 16, weight: 'bold' },
+                padding: { top: 10, bottom: 30 }
             }
         }
     };
