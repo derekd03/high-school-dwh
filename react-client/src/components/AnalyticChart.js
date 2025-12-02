@@ -55,16 +55,9 @@ const AnalyticChart = () => {
     }, [metric]);
 
     const labelKey = data.length ? Object.keys(data[0])[0] : 'label';
-    const valueKey = data.length 
-        ? (() => {
-            const keys = Object.keys(data[0]);
-            // For ecpc, use the last column
-            if (metric === 'ecpc') {
-                return keys[keys.length - 1];
-            }
-            return keys.find(k => k.toLowerCase().includes('metric')) || keys[1];
-        })()
-        : 'metricValue';
+    const valueKey = data.length
+    ? Object.keys(data[0]).at(-1)   // always use the last column
+    : 'metricValue';
 
     // Get the display label for the current metric
     const getMetricDisplayLabel = () => {
@@ -138,7 +131,7 @@ const AnalyticChart = () => {
         }
     };
 
-    const isTableOnlyMetric = (metricName) => ["esbd", "asst", "ccbt"].includes(metricName);
+    const isTableOnlyMetric = (metricName) => [].includes(metricName);
 
     return (
         <div className="analytic-chart-container">
